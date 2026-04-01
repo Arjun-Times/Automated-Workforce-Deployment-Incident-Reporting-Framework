@@ -1,0 +1,33 @@
+function DeploymenntReminder() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet()
+  const lastrow = ss.getLastRow()
+  const values = ss.getRange(2,1,lastrow-1,5).getValues()
+  const tomorrow_day = new Date()
+  tomorrow_day.setDate(tomorrow_day.getDate() + 1);
+  tomorrow_day.setHours(0,0,0,0)
+  tomorrow_DT = tomorrow_day.getTime()
+
+  for (let i=0;i<values.length;i++) {
+    const row = values[i]
+    const agent = row[0]
+    const receipent = row[1]
+    const deployement_day = new Date(row[2])
+    deployement_day.setHours(0,0,0,0)
+    const deployment_DT = deployement_day.getTime()
+    const office = row[3]
+    const status = row[4]
+
+    if (tomorrow_DT===deployment_DT) {
+      try{MailApp.sendEmail(receipent,
+      "REMINDER: "+row[3]+" Office Deployment Tomorrow",
+      "Hi "+row[1]+",\n\n Your deployment at "+ row[3]+" Office is scheduled tomorrow "+deployement_day+",\n\n Regards, \n Arjun")
+      ss.getRange(i+2,5).setValue("Reminder Sent")
+      }
+      catch (err) {
+        MailApp.sendEmail(Session.getActiveUser().getEmail(), row[3]+" Office Deployment Reminder Failed", deployement_day)
+        ss.getRange(i+2,5).setValue("Failed")
+      }
+    }
+    
+  }
+}
