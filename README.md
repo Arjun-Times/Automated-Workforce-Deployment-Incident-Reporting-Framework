@@ -10,7 +10,6 @@ An automated Workforce Management (WFM) solution designed to synchronize office 
 
 ## Technologies Used
 - **Google Apps Script**
-- **JavaScript (ES6+)**
 - **Google Sheets API**
 
 ## How it Works
